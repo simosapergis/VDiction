@@ -5,4 +5,10 @@
     <string name="recognize_text">Recognize Text</string>
     <string name="choose_img_from_gallery">Gallery</string>
     <string name="take_img_from_camera">Camera</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="rawText">Hello blank fragment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.sapergis.vdiction.fragments.ImageSelectionFragment;
+import com.sapergis.vdiction.fragments.TranslationFragment;
 import com.sapergis.vdiction.helper.GrantPermission;
 import com.sapergis.vdiction.helper.VDStaticValues;
 import com.sapergis.vdiction.implementation.VDTextRecognizer;
@@ -19,12 +21,15 @@ import com.sapergis.vdiction.model.VDText;
 import java.io.IOException;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity {
     //private ImageView mImageView;
     //private Button mTextButton;
     private Button mPickFromCamera;
     private Button mPickFromGallery;
+    private Button fragmentTest;
     private FirebaseVisionImage mSelectedImage;
     private FirebaseVisionImage storedImage;
 
@@ -33,29 +38,58 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final String TAG = "MainActivity";
 
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mPickFromCamera = findViewById(R.id.fromCameraButton);
-        mPickFromGallery = findViewById(R.id.fromGalleryButton);
-        //mPickFromCamera = findViewById(R.id.recognizeButton);
+//        mPickFromCamera = findViewById(R.id.fromCameraButton);
+//        mPickFromGallery = findViewById(R.id.fromGalleryButton);
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment, ImageSelectionFragment.newInstance("text1","text2"));
+        fragmentTransaction.addToBackStack("Selection");
+//                fragmentTransaction.add(TranslationFragment.newInstance("text1","text2"),"Fragment_FOR_Translation");
+        fragmentTransaction.commit();
 
-        mPickFromCamera.setOnClickListener(new View.OnClickListener() {
+        fragmentTest = findViewById(R.id.fragmentTest);
+
+        fragmentTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageFromCamera();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment, TranslationFragment.newInstance("text1","text2"));
+                fragmentTransaction.addToBackStack("Translation");
+//                fragmentTransaction.add(TranslationFragment.newInstance("text1","text2"),"Fragment_FOR_Translation");
+                fragmentTransaction.commit();
+
             }
         });
 
-        mPickFromGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageFromGallery();
-            }
-        });
 
+
+//        mPickFromCamera.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                imageFromCamera();
+//            }
+//        });
+//
+//        mPickFromGallery.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                imageFromGallery();
+//            }
+//        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
