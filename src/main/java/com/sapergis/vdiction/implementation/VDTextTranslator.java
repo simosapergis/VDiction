@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 public class VDTextTranslator {
     public static final String GREEK_LOCALE = "el";
     public static final String ENGLISH_LOCALE = "en";
+    public static final String TRANSLATION_SUCCESS = "SUCCESS";
+    public static final String TRANSLATION_FAILURE = "FAILURE";
     private final String TAG = this.getClass().getSimpleName();
     private String translateTo = null;
     private String translateFrom;
@@ -35,19 +37,24 @@ public class VDTextTranslator {
 
     public void startTranslation(){
             this.translatorOptions = setOptions();
-            this.fbTranslator = createTranslator(translatorOptions);
-            this.fbModelDownloadConditions = createModelConditions();
-            downloadModel(fbModelDownloadConditions);
+            if(translatorOptions!=null){
+                this.fbTranslator = createTranslator(translatorOptions);
+                this.fbModelDownloadConditions = createModelConditions();
+                downloadModel(fbModelDownloadConditions);
+            }else{
+                MainActivity.updateUI(vdText, TRANSLATION_FAILURE);
+            }
+
     }
 
     //1. first define the language to be translated
     private FirebaseTranslatorOptions setOptions (){
         //TODO --> logic to get saved language in order to set translateFrom
         switch (translateFrom){
-            case "en" :
+            case ENGLISH_LOCALE :
                 this.translateTo = GREEK_LOCALE;
                 break;
-            case "el" :
+            case GREEK_LOCALE :
                 this.translateTo = ENGLISH_LOCALE;
                 break;
                 default :
@@ -110,7 +117,7 @@ public class VDTextTranslator {
             @Override
             public void onSuccess(String s) {
                 vdText.setTranslatedText(s);
-                MainActivity.updateUI(vdText);
+                MainActivity.updateUI(vdText, TRANSLATION_SUCCESS);
                 Log.i(TAG, vdText.getTranslatedText());
             }
         });

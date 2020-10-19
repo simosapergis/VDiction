@@ -4,18 +4,16 @@ package com.sapergis.vdiction;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.sapergis.vdiction.helper.GrantPermission;
 import com.sapergis.vdiction.implementation.VDTextRecognizer;
 import com.sapergis.vdiction.model.VDText;
 import java.io.File;
@@ -91,32 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-
-    public void selectGalleryPhoto(){
-        //select storedImage from gallery
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select picture"), PICK_IMAGE);
-
-
-
-
-    }
-
-    public void findText(){
-        //Get text with camera
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -130,19 +102,17 @@ public class MainActivity extends AppCompatActivity {
 
         }
         if (requestCode == PICK_IMAGE){
-            String test;
-            Uri uri = data.getData();
-            if(ContextCompat.checkSelfPermission(MainActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ){
-                try {
-                    storedImage = FirebaseVisionImage.fromFilePath(MainActivity.this, uri  );
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else{
-                String [] perm = new String[2];
-                perm[0] = Manifest.permission.READ_EXTERNAL_STORAGE;
-                requestPermissions(perm, REQUEST_READ_PERMISSION);
+            if(GrantPermission.check(Manifest.permission.READ_EXTERNAL_STORAGE ,MainActivity.this)){
+                processStoredImage(data);
             }
+
+//            if(ContextCompat.checkSelfPermission(MainActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ){
+//
+//            }else{
+//                String [] perm = new String[2];
+//                perm[0] = Manifest.permission.READ_EXTERNAL_STORAGE;
+//                requestPermissions(perm, REQUEST_READ_PERMISSION);
+//            }
 //            String [] proj = {MediaStore.Images.Media.DATA};
 //            Cursor cursor = managedQuery(uri,proj,null,null,null);
 //            int colIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -155,9 +125,43 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void updateUI(VDText vdText){
-        System.out.println("VDiction  - MainActivity: RawText is"+ vdText.getRawText());
-        System.out.println("VDiction  - MainActivity: Translated text is"+vdText.getTranslatedText());
+    public static void updateUI(VDText vdText, String tranlationStatus){
+        System.out.println("VDiction  - MainActivity: "+tranlationStatus+" RawText is"+ vdText.getRawText());
+        System.out.println("VDiction  - MainActivity: "+tranlationStatus+" Translated text is"+vdText.getTranslatedText());
+    }
+
+
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void selectGalleryPhoto(){
+        //select storedImage from gallery
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select picture"), PICK_IMAGE);
+
+    }
+
+    private void processStoredImage( @Nullable Intent data) {
+        Uri uri = data.getData();
+        try {
+            storedImage = FirebaseVisionImage.fromFilePath(MainActivity.this, uri );
+            VDTextRecognizer vdTextRecognizer = new VDTextRecognizer(storedImage);
+            vdTextRecognizer.runTextRecognition();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void findText(){
+        //Get text with camera
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
 }
