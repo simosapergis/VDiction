@@ -22,5 +22,9 @@ public class VDText  {
         this.translatedText = translatedText;
     }
 
+    public String refineText(String string){
+        return string.replaceAll("\\n"," ");
+    }
+
 
 }

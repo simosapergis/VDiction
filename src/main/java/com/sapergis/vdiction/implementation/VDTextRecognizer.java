@@ -25,7 +25,8 @@ public class VDTextRecognizer {
                         new OnSuccessListener<FirebaseVisionText>() {
                             @Override
                             public void onSuccess(FirebaseVisionText firebaseVisionText) {
-                                vdText.setRawText(firebaseVisionText.getText());
+                                String refinedText =  vdText.refineText(firebaseVisionText.getText());
+                                vdText.setRawText(refinedText);
                                 new VDLanguageIdentifier().identifyLanguage(vdText);
                             }
                         })
