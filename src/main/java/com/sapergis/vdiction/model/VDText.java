@@ -3,6 +3,7 @@ package com.sapergis.vdiction.model;
 import com.sapergis.vdiction.interfaces.ITextOperations;
 
 public class VDText  {
+    public static
     String RawText;
     String translatedText;
 
