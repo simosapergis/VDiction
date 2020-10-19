@@ -2,32 +2,29 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#728799">
 
     <Button
         android:id="@+id/fromCameraButton"
+        style="@android:style/Widget.Holo.Button.Borderless.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|start"
-        android:text="@string/find_text_button"
 
-        />
-
-    <Button
-        android:id="@+id/recognizeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:text="@string/recognize_text" />
+        android:layout_marginLeft="60dp"
+        android:drawableTop="@android:drawable/ic_menu_camera"
+        android:text="@string/take_img_from_camera" />
 
     <Button
         android:id="@+id/fromGalleryButton"
+        style="@android:style/Widget.Holo.Button.Borderless.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|end"
-        android:text="@string/choose_img_from_gallery"
-
-        />
+        android:layout_marginRight="60dp"
+        android:drawableTop="@android:drawable/ic_menu_gallery"
+        android:text="@string/choose_img_from_gallery" />
 
     <ImageView
         android:id="@+id/imageView"

@@ -4,4 +4,5 @@
     <string name="find_text_button">Get text</string>
     <string name="recognize_text">Recognize Text</string>
     <string name="choose_img_from_gallery">Gallery</string>
+    <string name="take_img_from_camera">Camera</string>
 </resources>
