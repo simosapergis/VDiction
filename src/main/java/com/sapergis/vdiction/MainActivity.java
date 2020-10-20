@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseVisionImage mSelectedImage;
     private FirebaseVisionImage storedImage;
     private LDTranslationViewModel ldTranslationViewModel;
-    private LiveData<VDText> livaDataVDText;
+    private LiveData<VDText> liveDataVDText;
 
     private static final int PICK_IMAGE = 101;
     private static final int REQUEST_READ_PERMISSION = 786;
@@ -96,20 +96,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void subscribe(FirebaseVisionImage currentImage) {
+
         final Observer<VDText> vdTextObserver = new Observer<VDText>() {
             @Override
             public void onChanged(VDText vdText) {
                 System.out.println("VDction~~Observer~~ getrawtext:"+vdText.getRawText());
                 System.out.println("VDction~~Observer~~ getTranslatedText :"+vdText.getTranslatedText());
+                System.out.println("Vdction ~~VDTEXT CHANGED");
+                removeLiveDataObserver();
             }
         };
-        ldTranslationViewModel.getTranslation(currentImage).observeForever(vdTextObserver);
+        liveDataVDText = ldTranslationViewModel.getTranslation(currentImage);
+        liveDataVDText.observe(this,vdTextObserver);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void removeLiveDataObserver() {
+        liveDataVDText.removeObservers(this);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -124,13 +128,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void updateUI(VDText vdText, String tranlationStatus){
-        System.out.println("VDiction  - MainActivity: "+tranlationStatus
-                +" RawText is"+ vdText.getRawText());
-        System.out.println("VDiction  - MainActivity: "+tranlationStatus
-                +" Translated text is"+vdText.getTranslatedText());
-
-    }
+//    public static void updateUI(VDText vdText, String tranlationStatus){
+//        System.out.println("VDiction  - MainActivity: "+tranlationStatus
+//                +" RawText is"+ vdText.getRawText());
+//        System.out.println("VDiction  - MainActivity: "+tranlationStatus
+//                +" Translated text is"+vdText.getTranslatedText());
+//
+//    }
 
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();

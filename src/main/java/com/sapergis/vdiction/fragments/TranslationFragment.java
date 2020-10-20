@@ -4,13 +4,18 @@ package com.sapergis.vdiction.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.sapergis.vdiction.R;
+import com.sapergis.vdiction.model.VDText;
+import com.sapergis.vdiction.viewmodel.LDTranslationViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +34,7 @@ public class TranslationFragment extends Fragment {
 
     private TextView rawTextView;
     private TextView translatedTextView;
-
+    private LDTranslationViewModel ldTranslationViewModel;
 
     public TranslationFragment() {
         // Required empty public constructor
@@ -60,6 +65,7 @@ public class TranslationFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        ldTranslationViewModel = ViewModelProviders.of(this).get(LDTranslationViewModel.class);
 
     }
 
@@ -73,6 +79,18 @@ public class TranslationFragment extends Fragment {
         rawTextView.setText(mParam1);
         translatedTextView.setText(mParam2);
         return rootView;
+    }
+
+    private void subscribe(FirebaseVisionImage currentImage) {
+        final Observer<VDText> vdTextObserver = new Observer<VDText>() {
+            @Override
+            public void onChanged(VDText vdText) {
+                System.out.println("VDction~~Observer~~ getrawtext:"+vdText.getRawText());
+                System.out.println("VDction~~Observer~~ getTranslatedText :"+vdText.getTranslatedText());
+
+            }
+        };
+        ldTranslationViewModel.getTranslation(currentImage).observeForever(vdTextObserver);
     }
 
 }

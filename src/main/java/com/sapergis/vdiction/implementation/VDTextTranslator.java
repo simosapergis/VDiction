@@ -43,7 +43,7 @@ public class VDTextTranslator {
                 this.fbModelDownloadConditions = createModelConditions();
                 downloadModel(fbModelDownloadConditions);
             }else{
-                MainActivity.updateUI(vdText, TRANSLATION_FAILURE);
+                //MainActivity.updateUI(vdText, TRANSLATION_FAILURE);
             }
 
     }
