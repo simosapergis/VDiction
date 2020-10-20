@@ -13,6 +13,7 @@ import com.sapergis.vdiction.MainActivity;
 import com.sapergis.vdiction.model.VDText;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 public class VDTextTranslator {
     public static final String GREEK_LOCALE = "el";
@@ -20,19 +21,19 @@ public class VDTextTranslator {
     public static final String TRANSLATION_SUCCESS = "SUCCESS";
     public static final String TRANSLATION_FAILURE = "FAILURE";
     private final String TAG = this.getClass().getSimpleName();
-    private String translateTo = null;
-    private String translateFrom;
+//    private String translateTo = null;
+//    private String translateFrom;
     private Integer languageCodeTo;
     private Integer languageCodeFrom;
     private FirebaseTranslator fbTranslator;
     private FirebaseTranslatorOptions translatorOptions;
     private FirebaseModelDownloadConditions fbModelDownloadConditions;
-    private String tranlatedText;
+    private MutableLiveData mutableVDText;
     private VDText vdText;
 
-    public VDTextTranslator(String scannedTxtLocale, VDText vdText) {
-        this.translateFrom = scannedTxtLocale;
+    public VDTextTranslator(VDText vdText,MutableLiveData<VDText> mutableVDText) {
         this.vdText = vdText;
+        this.mutableVDText = mutableVDText;
     }
 
     public void startTranslation(){
@@ -50,21 +51,21 @@ public class VDTextTranslator {
     //1. first define the language to be translated
     private FirebaseTranslatorOptions setOptions (){
         //TODO --> logic to get saved language in order to set translateFrom
-        switch (translateFrom){
+        switch (vdText.getTranslateFromLocale()){
             case ENGLISH_LOCALE :
-                this.translateTo = GREEK_LOCALE;
+                vdText.setTranslateToLocale(GREEK_LOCALE);
                 break;
             case GREEK_LOCALE :
-                this.translateTo = ENGLISH_LOCALE;
+                vdText.setTranslateToLocale(ENGLISH_LOCALE);
                 break;
                 default :
                     //TODO --> Maybe show a pop up
                     Log.e(TAG, "Translation to this language is not supported");
                     break;
         }
-        if(translateTo != null){
-            this.languageCodeFrom = FirebaseTranslateLanguage.languageForLanguageCode(translateFrom);
-            this.languageCodeTo = FirebaseTranslateLanguage.languageForLanguageCode(translateTo);
+        if(vdText.getTranslateToLocale() != null){
+            this.languageCodeFrom = FirebaseTranslateLanguage.languageForLanguageCode(vdText.getTranslateFromLocale());
+            this.languageCodeTo = FirebaseTranslateLanguage.languageForLanguageCode(vdText.getTranslateToLocale());
             return new FirebaseTranslatorOptions.Builder()
                     .setSourceLanguage(languageCodeFrom)
                     .setTargetLanguage(languageCodeTo)
@@ -117,8 +118,9 @@ public class VDTextTranslator {
             @Override
             public void onSuccess(String s) {
                 vdText.setTranslatedText(s);
-                MainActivity.updateUI(vdText, TRANSLATION_SUCCESS);
-                Log.i(TAG, vdText.getTranslatedText());
+                mutableVDText.postValue(vdText);
+                //MainActivity.updateUI(vdText, TRANSLATION_SUCCESS);
+                //Log.i(TAG, vdText.getTranslatedText());
             }
         });
 

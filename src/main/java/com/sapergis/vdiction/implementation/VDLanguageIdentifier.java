@@ -11,6 +11,7 @@ import com.sapergis.vdiction.model.VDText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 
 
 /**
@@ -19,12 +20,13 @@ import androidx.annotation.Nullable;
 
 public class VDLanguageIdentifier {
 
-    private String locale = null;
+    //private String locale = null;
     private VDText vdText;
+    private MutableLiveData<VDText> mutableVDText;
     final String TAG  = "Vdiction Message: ";
 
-    public VDLanguageIdentifier() {
-
+    public VDLanguageIdentifier(MutableLiveData<VDText> mutableVDText) {
+        this.mutableVDText = mutableVDText;
     }
 
     public void identifyLanguage(final VDText vdText){
@@ -37,8 +39,9 @@ public class VDLanguageIdentifier {
                                 public void onSuccess(@Nullable String languageCode) {
                                     if (languageCode != "und") {
                                         Log.i(TAG, "Language: " + languageCode);
-                                        locale = languageCode;
-                                        VDTextTranslator vdTextTranslator = new VDTextTranslator(locale, vdText);
+                                        //locale = languageCode;
+                                        vdText.setTranslateFromLocale(languageCode);
+                                        VDTextTranslator vdTextTranslator = new VDTextTranslator(vdText, mutableVDText);
                                         vdTextTranslator.startTranslation();
                                     } else {
                                         Log.i(TAG, "Can't identify language.");
@@ -55,10 +58,6 @@ public class VDLanguageIdentifier {
                                 }
                             });
 
-    }
-
-    public String getLocale() {
-        return locale;
     }
 
     public VDText getVDText() {

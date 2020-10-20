@@ -9,13 +9,17 @@ import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.sapergis.vdiction.model.VDText;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 public class VDTextRecognizer {
     VDText vdText = new VDText();
+    MutableLiveData<VDText>  mutableVDText;
     FirebaseVisionImage vdImage;
 
-    public VDTextRecognizer(FirebaseVisionImage fbImage) {
+
+    public VDTextRecognizer(FirebaseVisionImage fbImage, MutableLiveData<VDText> mutableVDText) {
         this.vdImage = fbImage;
+        this.mutableVDText = mutableVDText;
     }
 
     public void runTextRecognition() {
@@ -27,7 +31,8 @@ public class VDTextRecognizer {
                             public void onSuccess(FirebaseVisionText firebaseVisionText) {
                                 String refinedText =  vdText.refineText(firebaseVisionText.getText());
                                 vdText.setRawText(refinedText);
-                                new VDLanguageIdentifier().identifyLanguage(vdText);
+                                //mutableVDText.postValue(vdText);
+                                new VDLanguageIdentifier(mutableVDText).identifyLanguage(vdText);
                             }
                         })
                 .addOnFailureListener(

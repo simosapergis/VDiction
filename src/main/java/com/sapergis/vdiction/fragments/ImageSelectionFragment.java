@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.sapergis.vdiction.R;
 
@@ -21,6 +22,9 @@ public class ImageSelectionFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private Button mPickFromCamera;
+    private Button mPickFromGallery;
 
     // TODO: Rename and change types of parameters
     private String mParam1;

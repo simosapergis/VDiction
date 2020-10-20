@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#728799">
-<!--
+
     <Button
         android:id="@+id/fromCameraButton"
         style="@android:style/Widget.Holo.Button.Borderless.Small"
@@ -26,7 +26,7 @@
         android:drawableTop="@android:drawable/ic_menu_gallery"
         android:text="@string/choose_img_from_gallery" />
 
--->
+
     <Button
         android:id="@+id/fragmentTest"
         style="@android:style/Widget.Holo.Button.Borderless.Small"
@@ -35,18 +35,19 @@
         android:layout_gravity="bottom"
         android:layout_marginRight="60dp"
         android:text="@string/choose_img_from_gallery" />
--->
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:contentDescription="@string/select_image_for_text_recognition"
         app:srcCompat="@color/common_google_signin_btn_text_light_disabled" />
-
+<!--
     <fragment
         android:id="@+id/fragment"
         android:name="com.sapergis.vdiction.fragments.TranslationFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    -->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

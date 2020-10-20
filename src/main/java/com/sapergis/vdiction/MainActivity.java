@@ -18,20 +18,27 @@ import com.sapergis.vdiction.helper.GrantPermission;
 import com.sapergis.vdiction.helper.VDStaticValues;
 import com.sapergis.vdiction.implementation.VDTextRecognizer;
 import com.sapergis.vdiction.model.VDText;
+import com.sapergis.vdiction.viewmodel.LDTranslationViewModel;
+
 import java.io.IOException;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 public class MainActivity extends AppCompatActivity {
-    //private ImageView mImageView;
-    //private Button mTextButton;
+    private ImageView mImageView;
+    private Button mTextButton;
     private Button mPickFromCamera;
     private Button mPickFromGallery;
     private Button fragmentTest;
     private FirebaseVisionImage mSelectedImage;
     private FirebaseVisionImage storedImage;
+    private LDTranslationViewModel ldTranslationViewModel;
+    private LiveData<VDText> livaDataVDText;
 
     private static final int PICK_IMAGE = 101;
     private static final int REQUEST_READ_PERMISSION = 786;
@@ -46,45 +53,57 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        mPickFromCamera = findViewById(R.id.fromCameraButton);
-//        mPickFromGallery = findViewById(R.id.fromGalleryButton);
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment, ImageSelectionFragment.newInstance("text1","text2"));
-        fragmentTransaction.addToBackStack("Selection");
-//                fragmentTransaction.add(TranslationFragment.newInstance("text1","text2"),"Fragment_FOR_Translation");
-        fragmentTransaction.commit();
+        String x = "str";
 
-        fragmentTest = findViewById(R.id.fragmentTest);
+        mPickFromCamera = findViewById(R.id.fromCameraButton);
+        mPickFromGallery = findViewById(R.id.fromGalleryButton);
+        ldTranslationViewModel = ViewModelProviders.of(this).get(LDTranslationViewModel.class);
+//        fragmentManager = getSupportFragmentManager();
+//        fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.fragment, ImageSelectionFragment.newInstance("text1","text2"));
+//        fragmentTransaction.addToBackStack("Selection");
+////                fragmentTransaction.add(TranslationFragment.newInstance("text1","text2"),"Fragment_FOR_Translation");
+//        fragmentTransaction.commit();
+//
+//        fragmentTest = findViewById(R.id.fragmentTest);
+//
+//        fragmentTest.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.fragment, TranslationFragment.newInstance("text1","text2"));
+//                fragmentTransaction.addToBackStack("Translation");
+////                fragmentTransaction.add(TranslationFragment.newInstance("text1","text2"),"Fragment_FOR_Translation");
+//                fragmentTransaction.commit();
+//
+//            }
+//        });
 
-        fragmentTest.setOnClickListener(new View.OnClickListener() {
+        mPickFromCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment, TranslationFragment.newInstance("text1","text2"));
-                fragmentTransaction.addToBackStack("Translation");
-//                fragmentTransaction.add(TranslationFragment.newInstance("text1","text2"),"Fragment_FOR_Translation");
-                fragmentTransaction.commit();
-
+                imageFromCamera();
             }
         });
 
+        mPickFromGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageFromGallery();
+            }
+        });
 
+    }
 
-//        mPickFromCamera.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                imageFromCamera();
-//            }
-//        });
-//
-//        mPickFromGallery.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                imageFromGallery();
-//            }
-//        });
-
+    private void subscribe(FirebaseVisionImage currentImage) {
+        final Observer<VDText> vdTextObserver = new Observer<VDText>() {
+            @Override
+            public void onChanged(VDText vdText) {
+                System.out.println("VDction~~Observer~~ getrawtext:"+vdText.getRawText());
+                System.out.println("VDction~~Observer~~ getTranslatedText :"+vdText.getTranslatedText());
+            }
+        };
+        ldTranslationViewModel.getTranslation(currentImage).observeForever(vdTextObserver);
     }
 
     @Override
@@ -110,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 +" RawText is"+ vdText.getRawText());
         System.out.println("VDiction  - MainActivity: "+tranlationStatus
                 +" Translated text is"+vdText.getTranslatedText());
+
     }
 
     private void showToast(String message) {
@@ -152,8 +172,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         if (currentImage != null) {
-            VDTextRecognizer vdTextRecognizer = new VDTextRecognizer(currentImage);
-            vdTextRecognizer.runTextRecognition();
+             subscribe(currentImage);
+//            VDTextRecognizer vdTextRecognizer = new VDTextRecognizer(currentImage);
+//            vdTextRecognizer.runTextRecognition();
         }
     }
 
