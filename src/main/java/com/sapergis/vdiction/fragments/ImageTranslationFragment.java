@@ -1,57 +1,37 @@
 package com.sapergis.vdiction.fragments;
 
-
 import android.os.Bundle;
-
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-
+import android.text.Editable;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.sapergis.vdiction.R;
-import com.sapergis.vdiction.viewmodel.LDTranslationViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TranslationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class TranslationFragment extends Fragment {
+public class ImageTranslationFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_RAWTEXT = "param1";
+    private static final String ARG_TRANSLATEDTEXT = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String rawText;
+    private String translatedText;
 
     private TextView rawTextView;
     private TextView translatedTextView;
-    private LDTranslationViewModel ldTranslationViewModel;
+    //private LDTranslationViewModel ldTranslationViewModel;
 
-    public TranslationFragment() {
-        // Required empty public constructor
+    public ImageTranslationFragment() {
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param rawText Parameter 1.
-     * @param translatedText Parameter 2.
-     * @return A new instance of fragment TranslationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static TranslationFragment newInstance(String rawText, String translatedText) {
-        TranslationFragment fragment = new TranslationFragment();
+    public static ImageTranslationFragment newInstance(@Nullable String rawText, @Nullable String translatedText) {
+        ImageTranslationFragment fragment = new ImageTranslationFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, rawText);
-        args.putString(ARG_PARAM2, translatedText);
+        args.putString(ARG_RAWTEXT, rawText);
+        args.putString(ARG_TRANSLATEDTEXT, translatedText);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,10 +40,10 @@ public class TranslationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            rawText = getArguments().getString(ARG_RAWTEXT);
+            translatedText = getArguments().getString(ARG_TRANSLATEDTEXT);
         }
-        ldTranslationViewModel = ViewModelProviders.of(this).get(LDTranslationViewModel.class);
+        //ldTranslationViewModel = ViewModelProviders.of(this).get(LDTranslationViewModel.class);
 
     }
 
@@ -73,12 +53,13 @@ public class TranslationFragment extends Fragment {
         // Inflate the layout for this fragment
         //subscribe();
         final View rootView  = inflater.inflate(R.layout.fragment_translation, container, false);
-        rawTextView = (TextView) rootView.findViewById(R.id.rawTextInput);
-        translatedTextView = (TextView) rootView.findViewById(R.id.translatedTextInput);
+        rawTextView = (TextView) rootView.findViewById(R.id.typeEditText);
+        translatedTextView = (TextView) rootView.findViewById(R.id.translatedText);
         rawTextView.setMovementMethod(new ScrollingMovementMethod());
+        rawTextView.setEditableFactory(new Editable.Factory());
         translatedTextView.setMovementMethod(new ScrollingMovementMethod());
-        rawTextView.setText(mParam1);
-        translatedTextView.setText(mParam2);
+        rawTextView.setText(rawText);
+        translatedTextView.setText(translatedText);
         return rootView;
     }
 

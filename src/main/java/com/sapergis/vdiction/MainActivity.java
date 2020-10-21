@@ -12,7 +12,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.sapergis.vdiction.fragments.ImageSelectionFragment;
-import com.sapergis.vdiction.fragments.TranslationFragment;
+import com.sapergis.vdiction.fragments.ImageTranslationFragment;
+import com.sapergis.vdiction.fragments.TypeTranslationFragment;
 import com.sapergis.vdiction.helper.GrantPermission;
 import com.sapergis.vdiction.helper.VDStaticValues;
 import com.sapergis.vdiction.model.VDText;
@@ -42,26 +43,10 @@ public class MainActivity extends AppCompatActivity implements ImageSelectionFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        mPickFromCamera = findViewById(R.id.fromCameraButton);
-//        mPickFromGallery = findViewById(R.id.fromGalleryButton);
         ldTranslationViewModel = ViewModelProviders.of(this).get(LDTranslationViewModel.class);
         getSupportFragmentManager().beginTransaction()
-//        fragmentTransaction.add(tf,"Translation Fragment");
-                                    .replace(R.id.fragmentLayout, ImageSelectionFragment.newInstance("text1","text2"))
-                                    .commit();
-
-         fragmentTest = findViewById(R.id.fragmentTest);
-         fragmentTest.setOnClickListener(new View.OnClickListener() {
-
-             @Override
-            public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragmentLayout, TranslationFragment.newInstance("text123","text1234"))
-                                    .addToBackStack("Translation")
-                                    .commit();
-            }
-        });
+                .replace(R.id.fragmentLayout, ImageSelectionFragment.newInstance("text1","text2"))
+                .commit();
     }
 
     private void subscribe(FirebaseVisionImage currentImage) {
@@ -82,11 +67,20 @@ public class MainActivity extends AppCompatActivity implements ImageSelectionFra
 
     private void openTranslationFragment(VDText vdText){
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentLayout, TranslationFragment.newInstance(vdText.refineText(vdText.getRawText()),vdText.getTranslatedText()))
-                .addToBackStack("Translation")
+                .replace(R.id.fragmentLayout,
+                        ImageTranslationFragment.newInstance(vdText.refineText(vdText.getRawText()),
+                                vdText.getTranslatedText()))
+                .addToBackStack("TranslationFromImage")
                 .commit();
-//                fragmentTransaction.add(TranslationFragment.newInstance("text1","text2"),"Fragment_FOR_Translation");
     }
+
+    private void openTypeTranslationFragment (){
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentLayout, TypeTranslationFragment.newInstance())
+                .addToBackStack("TypeTranslation")
+                .commit();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -143,5 +137,10 @@ public class MainActivity extends AppCompatActivity implements ImageSelectionFra
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select picture"), PICK_IMAGE);
+    }
+
+    @Override
+    public void typeWord(){
+        openTypeTranslationFragment();
     }
 }

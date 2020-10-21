@@ -22,6 +22,7 @@ public class ImageSelectionFragment extends Fragment {
 
     private Button mPickFromCamera;
     private Button mPickFromGallery;
+    private Button mTypeWord;
 
     private String mParam1;
     private String mParam2;
@@ -35,6 +36,7 @@ public class ImageSelectionFragment extends Fragment {
     public interface ImageSelectionFragmentListener{
         void imageFromCamera();
         void imageFromGallery();
+        void typeWord();
     }
 
 
@@ -66,7 +68,8 @@ public class ImageSelectionFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image_selection, container, false);
         mPickFromCamera = (Button)view.findViewById(R.id.fromCameraButton);
-        mPickFromGallery =  (Button)view.findViewById(R.id.fromGalleryButton);
+        mPickFromGallery = (Button)view.findViewById(R.id.fromGalleryButton);
+        mTypeWord = (Button)view.findViewById(R.id.typeWord);
         mPickFromCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +80,12 @@ public class ImageSelectionFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 listener.imageFromGallery();
+            }
+        });
+        mTypeWord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.typeWord();
             }
         });
         return view;

@@ -6,50 +6,6 @@
     android:layout_height="match_parent"
     android:background="#0A0D0F">
 
-    <!--
-
-    <Button
-        android:id="@+id/fromCameraButton"
-        style="@android:style/Widget.Holo.Button.Borderless.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|start"
-
-        android:layout_marginLeft="60dp"
-        android:drawableTop="@android:drawable/ic_menu_camera"
-        android:text="@string/take_img_from_camera" />
-
-    <Button
-        android:id="@+id/fromGalleryButton"
-        style="@android:style/Widget.Holo.Button.Borderless.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|end"
-        android:layout_marginRight="60dp"
-        android:drawableTop="@android:drawable/ic_menu_gallery"
-        android:text="@string/choose_img_from_gallery" />
-
-
-
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/select_image_for_text_recognition"
-        app:srcCompat="@color/common_google_signin_btn_text_light_disabled" />
-
-    -->
-
-    <Button
-        android:id="@+id/fragmentTest"
-        style="@android:style/Widget.Holo.Button.Borderless.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginRight="60dp"
-        android:text="@string/choose_img_from_gallery" />
-
     <FrameLayout
         android:id="@+id/fragmentLayout"
         android:layout_width="match_parent"

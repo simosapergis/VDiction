@@ -8,7 +8,10 @@
     <string name="select_text_identification_option">Select text identification option...</string>
     <string name="identified_text">Identified Text</string>
     <string name="translated_text">Translated Text</string>
-
+    <string name="type_and_translate">Type</string>
+    <string name="type_below">Type below</string>
+    <string name="translation">Translation</string>
+    <string name="translate">Translate</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="rawText">Hello blank fragment</string>
 

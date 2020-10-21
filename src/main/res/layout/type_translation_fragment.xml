@@ -10,9 +10,9 @@
     tools:context=".fragments.ImageTranslationFragment">
 
 
-    <TextView
+    <EditText
         android:id="@+id/typeEditText"
-        style="@android:style/Widget.TextView.PopupMenu"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:layout_width="match_parent"
         android:layout_height="280dp"
         android:layout_gravity="center|top"
@@ -21,11 +21,13 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="50dp"
         android:background="#9A98A3"
+        android:gravity="start|left"
         android:isScrollContainer="true"
         android:overScrollMode="always"
         android:scrollIndicators="right"
         android:scrollbarSize="10dp"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:textAlignment="textStart" />
 
     <TextView
         android:id="@+id/translatedText"
@@ -38,8 +40,9 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:background="#9A98A3"
-        android:scrollbars="vertical" />
-
+        android:scrollbars="vertical"
+        android:visibility="invisible" />
+<!--
     <TextView
         android:id="@+id/translatedTextLabel"
         style="@android:style/Widget.DeviceDefault.TextView"
@@ -50,10 +53,11 @@
         android:clickable="false"
         android:contextClickable="false"
         android:ems="14"
-        android:text="@string/translated_text"
+        android:text="@string/translation"
         android:textColor="#9A98A3"
         android:textSize="18sp"
         android:textStyle="bold" />
+    -->
 
     <TextView
         android:id="@+id/rawTextLabel"
@@ -64,10 +68,19 @@
         android:clickable="false"
         android:contextClickable="false"
         android:ems="14"
-        android:text="@string/identified_text"
+        android:text="@string/type_below"
         android:textColor="#9A98A3"
         android:textSize="18sp"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/translateButton"
+        style="@android:style/Widget.Holo.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableTop="@drawable/ic_text_fields_white_24dp"
+        android:text="@string/translate" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0A0D0F">
@@ -11,9 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|start"
-
         android:layout_marginLeft="60dp"
-        android:drawableTop="@android:drawable/ic_menu_camera"
+        android:drawableTop="@drawable/ic_camera_white_24dp"
         android:text="@string/take_img_from_camera" />
 
     <Button
@@ -23,18 +23,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center|end"
         android:layout_marginRight="60dp"
-        android:drawableTop="@android:drawable/ic_menu_gallery"
+        android:drawableTop="@drawable/ic_collections_white_24dp"
         android:text="@string/choose_img_from_gallery" />
 
-
     <Button
-        android:id="@+id/fragmentTest"
+        android:id="@+id/typeWord"
         style="@android:style/Widget.Holo.Button.Borderless.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginRight="60dp"
-        android:text="@string/choose_img_from_gallery" />
+        android:layout_gravity="center"
+        android:drawableTop="@drawable/ic_translate_white_24dp"
+        android:gravity="center_horizontal"
+        android:text="@string/type_and_translate" />
 
     <ImageView
         android:id="@+id/imageView"
