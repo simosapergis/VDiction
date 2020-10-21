@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements ImageSelectionFra
 
     private void openTranslationFragment(VDText vdText){
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentLayout, TranslationFragment.newInstance(vdText.getRawText(),vdText.getTranslatedText()))
+                .replace(R.id.fragmentLayout, TranslationFragment.newInstance(vdText.refineText(vdText.getRawText()),vdText.getTranslatedText()))
                 .addToBackStack("Translation")
                 .commit();
 //                fragmentTransaction.add(TranslationFragment.newInstance("text1","text2"),"Fragment_FOR_Translation");

@@ -12,12 +12,6 @@ import com.sapergis.vdiction.model.VDText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
-
-
-/**
- * Created by Σίμος on 20/8/2019.
- */
-
 public class VDLanguageIdentifier {
 
     //private String locale = null;

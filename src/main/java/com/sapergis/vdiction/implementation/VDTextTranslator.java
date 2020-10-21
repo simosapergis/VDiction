@@ -33,7 +33,7 @@ public class VDTextTranslator {
     public VDTextTranslator(VDText vdText,MutableLiveData<VDText> mutableVDText) {
         this.vdText = vdText;
         this.mutableVDText = mutableVDText;
-    }
+       }
 
     public void startTranslation(){
             this.translatorOptions = setOptions();
@@ -118,7 +118,6 @@ public class VDTextTranslator {
             public void onSuccess(String s) {
                 vdText.setTranslatedText(s);
                 mutableVDText.postValue(vdText);
-                //MainActivity.updateUI(vdText, TRANSLATION_SUCCESS);
                 //Log.i(TAG, vdText.getTranslatedText());
             }
         });

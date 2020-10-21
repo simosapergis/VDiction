@@ -4,17 +4,15 @@ package com.sapergis.vdiction.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.sapergis.vdiction.R;
-import com.sapergis.vdiction.model.VDText;
 import com.sapergis.vdiction.viewmodel.LDTranslationViewModel;
 
 /**
@@ -75,8 +73,10 @@ public class TranslationFragment extends Fragment {
         // Inflate the layout for this fragment
         //subscribe();
         final View rootView  = inflater.inflate(R.layout.fragment_translation, container, false);
-        rawTextView = (TextView) rootView.findViewById(R.id.rawText);
-        translatedTextView = (TextView) rootView.findViewById(R.id.translatedText);
+        rawTextView = (TextView) rootView.findViewById(R.id.rawTextInput);
+        translatedTextView = (TextView) rootView.findViewById(R.id.translatedTextInput);
+        rawTextView.setMovementMethod(new ScrollingMovementMethod());
+        translatedTextView.setMovementMethod(new ScrollingMovementMethod());
         rawTextView.setText(mParam1);
         translatedTextView.setText(mParam2);
         return rootView;

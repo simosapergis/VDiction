@@ -11,28 +11,63 @@
 
 
     <TextView
-        android:id="@+id/rawText"
+        android:id="@+id/rawTextInput"
+        style="@android:style/Widget.TextView.PopupMenu"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="280dp"
         android:layout_gravity="center|top"
         android:layout_marginBottom="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
-        android:background="#9A98A3"
-        android:text="Sample Raw Text" />
-
-    <TextView
-        android:id="@+id/translatedText"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="50dp"
         android:background="#9A98A3"
-        android:text="Sample Translated Text" />
+        android:isScrollContainer="true"
+        android:overScrollMode="always"
+        android:scrollIndicators="right"
+        android:scrollbarSize="10dp"
+        android:scrollbars="vertical" />
+
+    <TextView
+        android:id="@+id/translatedTextInput"
+        style="@android:style/Widget.TextView.PopupMenu"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#9A98A3"
+        android:scrollbars="vertical" />
+
+    <TextView
+        android:id="@+id/translatedTextLabel"
+        style="@android:style/Widget.DeviceDefault.TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|start"
+        android:layout_marginLeft="10dp"
+        android:clickable="false"
+        android:contextClickable="false"
+        android:ems="14"
+        android:text="@string/translated_text"
+        android:textColor="#9A98A3"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/rawTextLabel"
+        style="@android:style/Widget.Holo.TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:clickable="false"
+        android:contextClickable="false"
+        android:ems="14"
+        android:text="@string/identified_text"
+        android:textColor="#9A98A3"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

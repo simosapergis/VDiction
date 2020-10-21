@@ -43,5 +43,18 @@
         android:contentDescription="@string/select_image_for_text_recognition"
         app:srcCompat="@color/common_google_signin_btn_text_light_disabled" />
 
+    <EditText
+        android:id="@+id/imageSelectionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:inputType="textPersonName"
+        android:text="@string/select_text_identification_option"
+        android:textColor="#9A98A3"
+        android:textStyle="bold|italic" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -5,6 +5,9 @@
     <string name="recognize_text">Recognize Text</string>
     <string name="choose_img_from_gallery">Gallery</string>
     <string name="take_img_from_camera">Camera</string>
+    <string name="select_text_identification_option">Select text identification option...</string>
+    <string name="identified_text">Identified Text</string>
+    <string name="translated_text">Translated Text</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="rawText">Hello blank fragment</string>
