@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0A0D0F"
+    android:backgroundTint="#0A0D0F"
+    android:fitsSystemWindows="false"
+    android:visibility="visible"
     tools:context=".fragments.TranslationFragment">
 
 
@@ -15,6 +19,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
+        android:background="#9A98A3"
         android:text="Sample Raw Text" />
 
     <TextView
@@ -26,6 +31,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="50dp"
+        android:background="#9A98A3"
         android:text="Sample Translated Text" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

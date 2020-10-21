@@ -9,7 +9,6 @@ import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions;
-import com.sapergis.vdiction.MainActivity;
 import com.sapergis.vdiction.model.VDText;
 
 import androidx.annotation.NonNull;
@@ -43,7 +42,7 @@ public class VDTextTranslator {
                 this.fbModelDownloadConditions = createModelConditions();
                 downloadModel(fbModelDownloadConditions);
             }else{
-                //MainActivity.updateUI(vdText, TRANSLATION_FAILURE);
+               //TODO =>> message that the translation has failed
             }
 
     }

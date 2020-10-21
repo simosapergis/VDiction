@@ -44,16 +44,16 @@ public class TranslationFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param rawText Parameter 1.
+     * @param translatedText Parameter 2.
      * @return A new instance of fragment TranslationFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static TranslationFragment newInstance(String param1, String param2) {
+    public static TranslationFragment newInstance(String rawText, String translatedText) {
         TranslationFragment fragment = new TranslationFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM1, rawText);
+        args.putString(ARG_PARAM2, translatedText);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,6 +73,7 @@ public class TranslationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        //subscribe();
         final View rootView  = inflater.inflate(R.layout.fragment_translation, container, false);
         rawTextView = (TextView) rootView.findViewById(R.id.rawText);
         translatedTextView = (TextView) rootView.findViewById(R.id.translatedText);
@@ -81,16 +82,16 @@ public class TranslationFragment extends Fragment {
         return rootView;
     }
 
-    private void subscribe(FirebaseVisionImage currentImage) {
-        final Observer<VDText> vdTextObserver = new Observer<VDText>() {
-            @Override
-            public void onChanged(VDText vdText) {
-                System.out.println("VDction~~Observer~~ getrawtext:"+vdText.getRawText());
-                System.out.println("VDction~~Observer~~ getTranslatedText :"+vdText.getTranslatedText());
-
-            }
-        };
-        ldTranslationViewModel.getTranslation(currentImage).observeForever(vdTextObserver);
-    }
+//    private void subscribe() {
+//        final Observer<VDText> vdTextObserver = new Observer<VDText>() {
+//            @Override
+//            public void onChanged(VDText vdText) {
+//                System.out.println("VDction~~Observer FROM TRANSLATION ~~ getrawtext:"+vdText.getRawText());
+//                System.out.println("VDction~~Observer FROM TRANSLATION  ~~ getTranslatedText :"+vdText.getTranslatedText());
+//
+//            }
+//        };
+//        ldTranslationViewModel.getLiveDataVDText().observeForever(vdTextObserver);
+//    }
 
 }

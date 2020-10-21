@@ -1,6 +1,5 @@
 package com.sapergis.vdiction;
 
-
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,24 +15,18 @@ import com.sapergis.vdiction.fragments.ImageSelectionFragment;
 import com.sapergis.vdiction.fragments.TranslationFragment;
 import com.sapergis.vdiction.helper.GrantPermission;
 import com.sapergis.vdiction.helper.VDStaticValues;
-import com.sapergis.vdiction.implementation.VDTextRecognizer;
 import com.sapergis.vdiction.model.VDText;
 import com.sapergis.vdiction.viewmodel.LDTranslationViewModel;
-
 import java.io.IOException;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ImageSelectionFragment.ImageSelectionFragmentListener {
     private ImageView mImageView;
     private Button mTextButton;
-    private Button mPickFromCamera;
-    private Button mPickFromGallery;
     private Button fragmentTest;
     private FirebaseVisionImage mSelectedImage;
     private FirebaseVisionImage storedImage;
@@ -45,64 +38,37 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final String TAG = "MainActivity";
 
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String x = "str";
-
-        mPickFromCamera = findViewById(R.id.fromCameraButton);
-        mPickFromGallery = findViewById(R.id.fromGalleryButton);
+//        mPickFromCamera = findViewById(R.id.fromCameraButton);
+//        mPickFromGallery = findViewById(R.id.fromGalleryButton);
         ldTranslationViewModel = ViewModelProviders.of(this).get(LDTranslationViewModel.class);
-//        fragmentManager = getSupportFragmentManager();
-//        fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.fragment, ImageSelectionFragment.newInstance("text1","text2"));
-//        fragmentTransaction.addToBackStack("Selection");
-////                fragmentTransaction.add(TranslationFragment.newInstance("text1","text2"),"Fragment_FOR_Translation");
-//        fragmentTransaction.commit();
-//
-//        fragmentTest = findViewById(R.id.fragmentTest);
-//
-//        fragmentTest.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.fragment, TranslationFragment.newInstance("text1","text2"));
-//                fragmentTransaction.addToBackStack("Translation");
-////                fragmentTransaction.add(TranslationFragment.newInstance("text1","text2"),"Fragment_FOR_Translation");
-//                fragmentTransaction.commit();
-//
-//            }
-//        });
+        getSupportFragmentManager().beginTransaction()
+//        fragmentTransaction.add(tf,"Translation Fragment");
+                                    .replace(R.id.fragmentLayout, ImageSelectionFragment.newInstance("text1","text2"))
+                                    .commit();
 
-        mPickFromCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
+         fragmentTest = findViewById(R.id.fragmentTest);
+         fragmentTest.setOnClickListener(new View.OnClickListener() {
+
+             @Override
             public void onClick(View v) {
-                imageFromCamera();
+                getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragmentLayout, TranslationFragment.newInstance("text123","text1234"))
+                                    .addToBackStack("Translation")
+                                    .commit();
             }
         });
-
-        mPickFromGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageFromGallery();
-            }
-        });
-
     }
 
     private void subscribe(FirebaseVisionImage currentImage) {
-
         final Observer<VDText> vdTextObserver = new Observer<VDText>() {
             @Override
             public void onChanged(VDText vdText) {
-                System.out.println("VDction~~Observer~~ getrawtext:"+vdText.getRawText());
-                System.out.println("VDction~~Observer~~ getTranslatedText :"+vdText.getTranslatedText());
-                System.out.println("Vdction ~~VDTEXT CHANGED");
+                openTranslationFragment(vdText);
                 removeLiveDataObserver();
             }
         };
@@ -114,46 +80,27 @@ public class MainActivity extends AppCompatActivity {
         liveDataVDText.removeObservers(this);
     }
 
-
+    private void openTranslationFragment(VDText vdText){
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentLayout, TranslationFragment.newInstance(vdText.getRawText(),vdText.getTranslatedText()))
+                .addToBackStack("Translation")
+                .commit();
+//                fragmentTransaction.add(TranslationFragment.newInstance("text1","text2"),"Fragment_FOR_Translation");
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             processImage(VDStaticValues.CAMERA_IMAGE, data);
         }
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK ) {
-            if (GrantPermission.check(Manifest.permission.READ_EXTERNAL_STORAGE,
-                    MainActivity.this)) {
-                processImage(VDStaticValues.GALLERY_IMAGE, data);
-            }
+            GrantPermission.check(Manifest.permission.READ_EXTERNAL_STORAGE, MainActivity.this);
+            processImage(VDStaticValues.GALLERY_IMAGE, data);
+
         }
     }
-
-//    public static void updateUI(VDText vdText, String tranlationStatus){
-//        System.out.println("VDiction  - MainActivity: "+tranlationStatus
-//                +" RawText is"+ vdText.getRawText());
-//        System.out.println("VDiction  - MainActivity: "+tranlationStatus
-//                +" Translated text is"+vdText.getTranslatedText());
-//
-//    }
 
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    private void imageFromGallery(){
-        //select storedImage from gallery
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select picture"), PICK_IMAGE);
-    }
-
-    private void imageFromCamera(){
-        //Get text with camera
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
     }
 
     private void processImage(String imageCAtegory, @Nullable Intent data) {
@@ -177,9 +124,24 @@ public class MainActivity extends AppCompatActivity {
         }
         if (currentImage != null) {
              subscribe(currentImage);
-//            VDTextRecognizer vdTextRecognizer = new VDTextRecognizer(currentImage);
-//            vdTextRecognizer.runTextRecognition();
         }
     }
 
+    @Override
+    public void imageFromCamera() {
+        //Get text with camera
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    public void imageFromGallery() {
+        //select storedImage from gallery
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select picture"), PICK_IMAGE);
+    }
 }

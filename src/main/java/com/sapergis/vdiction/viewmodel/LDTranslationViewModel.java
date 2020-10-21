@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class LDTranslationViewModel extends ViewModel {
-    private MutableLiveData<VDText> vdText ;
+    private MutableLiveData<VDText> vdText;
     public LDTranslationViewModel() {
         super();
     }
