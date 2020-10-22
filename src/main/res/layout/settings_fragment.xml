@@ -1,13 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Settings">
+    android:layout_gravity="center"
+    android:background="#A8A5BB"
+    android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert"
+    app:layout_constrainedHeight="false"
+    tools:context=".fragments.SettingsDialogFragment">
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:text="Button" />
+
+    <Spinner
+        android:id="@+id/localeSpinner"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center|right"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#172723"
+        android:entries="@array/locale_entries"
+        android:minHeight="30dp"
+        android:spinnerMode="dropdown"
+        android:theme="@style/Base.Animation.AppCompat.Dialog" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:id="@+id/localeSelectLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center|left"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="Desired Locale"
+        android:textStyle="bold" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="30dp"
+        android:ems="10"
+        android:inputType="time"
+        android:paddingBottom="100dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

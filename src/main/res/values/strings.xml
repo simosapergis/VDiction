@@ -12,9 +12,17 @@
     <string name="type_below">Type below</string>
     <string name="translation">Translation</string>
     <string name="translate">Translate</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="rawText">Hello blank fragment</string>
 
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <array name="locale_entries">
+        <item>el</item>
+        <item>en</item>
+    </array>
 </resources>

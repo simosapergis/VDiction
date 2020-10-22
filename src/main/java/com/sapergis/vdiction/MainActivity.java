@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.sapergis.vdiction.fragments.ImageSelectionFragment;
 import com.sapergis.vdiction.fragments.ImageTranslationFragment;
+import com.sapergis.vdiction.fragments.SettingsDialogFragment;
 import com.sapergis.vdiction.fragments.TypeTranslationFragment;
 import com.sapergis.vdiction.helper.GrantPermission;
 import com.sapergis.vdiction.helper.VDStaticValues;
@@ -20,29 +20,41 @@ import com.sapergis.vdiction.model.VDText;
 import com.sapergis.vdiction.viewmodel.LDTranslationViewModel;
 import java.io.IOException;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-public class MainActivity extends AppCompatActivity implements ImageSelectionFragment.ImageSelectionFragmentListener {
-    private ImageView mImageView;
-    private Button mTextButton;
-    private Button fragmentTest;
-    private FirebaseVisionImage mSelectedImage;
-    private FirebaseVisionImage storedImage;
+public class MainActivity extends AppCompatActivity implements
+                                            ImageSelectionFragment.ImageSelectionFragmentListener,
+                                            SettingsDialogFragment.NoticeDialogListener {
     private LDTranslationViewModel ldTranslationViewModel;
     private LiveData<VDText> liveDataVDText;
-
     private static final int PICK_IMAGE = 101;
-    private static final int REQUEST_READ_PERMISSION = 786;
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final String TAG = "MainActivity";
+    private Button testBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /**
+         *Delete
+         */
+        testBtn = (Button)findViewById(R.id.test1);
+        testBtn.setOnClickListener(new View.OnClickListener() {
+                                       @Override
+                                       public void onClick(View v) {
+                                           alertBuilder();
+                                       }
+                                   }
+        );
+        /**
+         *Delete
+         */
         ldTranslationViewModel = ViewModelProviders.of(this).get(LDTranslationViewModel.class);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentLayout, ImageSelectionFragment.newInstance("text1","text2"))
@@ -142,5 +154,26 @@ public class MainActivity extends AppCompatActivity implements ImageSelectionFra
     @Override
     public void typeWord(){
         openTypeTranslationFragment();
+    }
+
+    protected void alertBuilder(){
+//        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
+//        dialogBuilder.setMessage("SImos")
+//                .setTitle("Apergis");
+//        dialogBuilder.se
+//        AlertDialog dialog = dialogBuilder.create();
+//        dialog.show();
+        SettingsDialogFragment settingsDialogFragment = new SettingsDialogFragment();
+        settingsDialogFragment.show(getSupportFragmentManager(), "Settings");
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialogFragment) {
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialogFragment) {
+
     }
 }

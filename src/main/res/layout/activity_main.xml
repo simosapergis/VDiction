@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     android:background="#0A0D0F">
 
+    <Button
+        android:id="@+id/test1"
+        style="@android:style/Widget.Holo.Button.Borderless.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginRight="60dp"
+        android:text="@string/choose_img_from_gallery" />
+
     <FrameLayout
         android:id="@+id/fragmentLayout"
         android:layout_width="match_parent"
