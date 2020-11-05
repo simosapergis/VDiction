@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.sapergis.vdiction.fragments.SettingsDialogFragment;
 import com.sapergis.vdiction.fragments.TypeTranslationFragment;
 import com.sapergis.vdiction.helper.GrantPermission;
 import com.sapergis.vdiction.helper.VDStaticValues;
+import com.sapergis.vdiction.implementation.VDTextToSpeech;
 import com.sapergis.vdiction.model.VDText;
 import com.sapergis.vdiction.viewmodel.LDTranslationViewModel;
 import java.io.IOException;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements
                                             SettingsDialogFragment.NoticeDialogListener {
     private LDTranslationViewModel ldTranslationViewModel;
     private LiveData<VDText> liveDataVDText;
+    private VDTextToSpeech vdTextToSpeech;
     private static final int PICK_IMAGE = 101;
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final String TAG = "MainActivity";
@@ -41,6 +44,11 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        vdTextToSpeech = new VDTextToSpeech(getApplicationContext());
+        ldTranslationViewModel = ViewModelProviders.of(this).get(LDTranslationViewModel.class);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentLayout, ImageSelectionFragment.newInstance("text1","text2"))
+                .commit();
         /**
          *Delete
          */
@@ -48,17 +56,16 @@ public class MainActivity extends AppCompatActivity implements
         testBtn.setOnClickListener(new View.OnClickListener() {
                                        @Override
                                        public void onClick(View v) {
-                                           alertBuilder();
+                                           vdTextToSpeech.speak("Good Morning, how are you ?");
+                                           //alertBuilder();
+
                                        }
                                    }
         );
         /**
          *Delete
          */
-        ldTranslationViewModel = ViewModelProviders.of(this).get(LDTranslationViewModel.class);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentLayout, ImageSelectionFragment.newInstance("text1","text2"))
-                .commit();
+
     }
 
     private void subscribe(FirebaseVisionImage currentImage) {
@@ -175,5 +182,11 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onDialogNegativeClick(DialogFragment dialogFragment) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        vdTextToSpeech.shutDown();
     }
 }
