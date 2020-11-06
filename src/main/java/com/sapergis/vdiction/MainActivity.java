@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final String TAG = "MainActivity";
     private Button testBtn;
-
+    int count = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,16 +59,35 @@ public class MainActivity extends AppCompatActivity implements
                                        @Override
                                        public void onClick(View v) {
                                            vdTextToSpeech.speak("Good Morning, how are you ?");
+                                           executeHandler();
                                            //alertBuilder();
 
                                        }
                                    }
         );
-        /**
-         *Delete
-         */
 
     }
+    /**
+     *Delete
+     */
+    private void executeHandler(){
+       final Handler h =  new Handler();
+
+       final Runnable runnable = new Runnable(){
+           @Override
+           public void run() {
+               Log.i(">>SAP<<", "Just spoke to you "+count+" time(s)");
+               if(count++ < 5){
+                   h.postDelayed(this,3000);
+               }
+           }
+       };
+
+       h.post(runnable);
+    }
+    /**
+    *
+     */
 
     private void subscribe(FirebaseVisionImage currentImage) {
         final Observer<VDText> vdTextObserver = new Observer<VDText>() {
